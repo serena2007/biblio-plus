@@ -1,85 +1,31 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { ref } from 'vue'
+
+const query = ref('')
+const featured = ref([
+  { id: 1, title: 'Le Petit Prince', author: 'A. de Saint-Exupéry',
+    available: true },
+  { id: 2, title: 'Germinal', author: 'É. Zola', available: false },
+])
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <h1>Biblio+</h1>
+  <input v-model="query" type="search" placeholder="Titre, auteur…" />
+  <p>Recherche en cours : {{ query }}</p>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <ul>
+    <li v-for="book in featured" :key="book.id">
+      {{ book.title }} — {{ book.author }}
+      <strong v-if="book.available">Disponible</strong>
+      <em v-else>Emprunté</em>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+      <button type="button" @click="book.available = !book.available">
+        Changer le statut
+      </button>
+    </li>
+  </ul>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
